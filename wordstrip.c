@@ -3,6 +3,8 @@
 #include <string.h>
 #include <time.h>
 
+//this is a test
+
 #define MAX_SENTENCE_LENGTH 99999999
 
 int main(int argc, char *argv[]) {
