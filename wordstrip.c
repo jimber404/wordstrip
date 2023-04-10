@@ -3,16 +3,14 @@
 #include <string.h>
 #include <time.h>
 
-//this is a tes
-
-#define MAX_SENTENCE_LENGTH 99999999
+#define MAX_SENTENCE_LENGTH 1000
 
 int main(int argc, char *argv[]) {
     FILE *input_file, *output_file;
     char *input_filename, *output_filename;
     char sentence[MAX_SENTENCE_LENGTH];
     char *token;
-    const char *delimiter = ".";
+    const char *delimiter = ".!?";
     int sentence_count = 0, selected_count = 0;
     int *selected_indices, i;
 
@@ -26,13 +24,13 @@ int main(int argc, char *argv[]) {
     output_filename = argv[2];
 
     // Open input and output files
-    input_file = fopen(input_filename, "r");
+    input_file = fopen(input_filename, "r+");
     if (!input_file) {
         printf("Error opening input file: %s\n", input_filename);
         return 1;
     }
 
-    output_file = fopen(output_filename, "w+");
+    output_file = fopen(output_filename, "w");
     if (!output_file) {
         printf("Error opening output file: %s\n", output_filename);
         fclose(input_file);
@@ -40,6 +38,7 @@ int main(int argc, char *argv[]) {
     }
 
     // Count the number of sentences in the input file
+    // Can this an sentence slection not be done at the same time? I guess rng is intesive.
     while (fgets(sentence, MAX_SENTENCE_LENGTH, input_file)) {
         token = strtok(sentence, delimiter);
         while (token != NULL) {
@@ -58,6 +57,7 @@ int main(int argc, char *argv[]) {
     }
 
     // Read the input file again and write selected sentences to the output file
+    // This is failing to writing to the output file, why?
     rewind(input_file);
     i = 0;
     while (fgets(sentence, MAX_SENTENCE_LENGTH, input_file)) {
@@ -71,6 +71,7 @@ int main(int argc, char *argv[]) {
             } else {
                 i++;
             }
+            printf( " %s\n", token );
             token = strtok(NULL, delimiter);
         }
     }
