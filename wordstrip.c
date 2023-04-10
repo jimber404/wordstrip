@@ -51,27 +51,39 @@ int main(int argc, char *argv[]) {
     selected_count = sentence_count / 4;
     selected_indices = (int*) malloc(selected_count * sizeof(int));
 
+    //Fails to preserve sentence order.
     srand(time(NULL)); // Seed random number generator
     for (i = 0; i < selected_count; i++) {
         selected_indices[i] = rand() % sentence_count;
     }
 
+    //Viewing contents. All seems okay?
+    for (int i = 0; i < selected_count; i++) {
+        printf("Selected index %d: %d\n", i, selected_indices[i]);
+    }
+
     // Read the input file again and write selected sentences to the output file
-    // This is failing to writing to the output file, why?
+    // Some of the text comes out wonnky with hyphons and breaks, consider alternative?
     rewind(input_file);
     i = 0;
     while (fgets(sentence, MAX_SENTENCE_LENGTH, input_file)) {
         token = strtok(sentence, delimiter);
         while (token != NULL) {
+            // It seems like this if condition is failing to be met most of the time, why?
+            // I think the below function assumes that selected_indicies are stored in order.
             if (i < selected_count && selected_indices[i] == i) {
                 fprintf(output_file, "%s\n", token);
+                printf( " %s was written \n", token );
                 i++;
+                printf("Hit \n");
+            // This condition is often met, is this intended?
             } else if (i >= selected_count) {
+                printf("Break \n");
                 break;
             } else {
+                printf("Miss \n");
                 i++;
             }
-            printf( " %s\n", token );
             token = strtok(NULL, delimiter);
         }
     }
