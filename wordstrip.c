@@ -3,7 +3,7 @@
 #include <string.h>
 #include <time.h>
 
-//this is a test
+//this is a tes
 
 #define MAX_SENTENCE_LENGTH 99999999
 
