@@ -1,9 +1,12 @@
+// NEED SOME CAMEL CASE UP IN THIS BITCH
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <ctype.h>
 
-#define MAX_SENTENCE_LENGTH 1000
+#define MAX_SENTENCE_LENGTH 9999
 
 int main(int argc, char *argv[]) {
     FILE *input_file, *output_file;
@@ -11,7 +14,7 @@ int main(int argc, char *argv[]) {
     char sentence[MAX_SENTENCE_LENGTH];
     char *token;
     const char *delimiter = ".!?";
-    int sentence_count = 0, selected_count = 0;
+    int sentence_count = 0, selected_count = 0, percentileSelectionChance = 75, writtenSentences = 0;
     int i;
 
     // Check if input and output filenames are provided
@@ -20,8 +23,10 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
+    // Useful to know for later, how to do it with hyphon prefix?
     input_filename = argv[1];
     output_filename = argv[2];
+    // percentile_selection_change = 100-arg[n];
 
     // Open input and output files
     input_file = fopen(input_filename, "r+");
@@ -37,12 +42,18 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
+    // Seeding RNG
     srand(time(NULL));
+    // Still randomly writes empty lines, why?
     while (fgets(sentence, MAX_SENTENCE_LENGTH, input_file)) {
         token = strtok(sentence, delimiter);
         while (token != NULL) {
-            if (rand() % 101 >= 75){
+            // RNG, probably a cleaner way to do this
+            if (rand() % 101 >= percentileSelectionChance){
+                // Whitespace filter, probably a quicker way to do this
+                while(isspace((unsigned char)*token)) token++;
                 fprintf(output_file, "%s\n", token);
+                writtenSentences++;
             }
             token = strtok(NULL, delimiter);
         }
@@ -51,6 +62,8 @@ int main(int argc, char *argv[]) {
     
     fclose(input_file);
     fclose(output_file);
+
+    printf("Wrote %d sentences \n", writtenSentences);
 
     return 0;
 }
