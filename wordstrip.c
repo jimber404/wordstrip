@@ -13,7 +13,8 @@ int main(int argc, char *argv[]) {
     char *input_filename, *output_filename;
     char sentence[MAX_SENTENCE_LENGTH];
     char *token;
-    const char *delimiter = ".!?\n";
+    // Potential probelms here, notably full stops at the end of speaking.
+    const char *delimiter = ".!?";
     int sentence_count = 0, selected_count = 0, percentileSelectionChance = 75, writtenSentences = 0;
     int i;
 
@@ -45,11 +46,12 @@ int main(int argc, char *argv[]) {
     // Seeding RNG
     srand(time(NULL));
     // Still randomly writes empty lines, why?
+    // Empty lines can still be included with current delims, 
     while (fgets(sentence, MAX_SENTENCE_LENGTH, input_file)) {
         token = strtok(sentence, delimiter);
         while (token != NULL) {
-            // RNG, probably a cleaner way to do this
-            if (rand() % 101 >= percentileSelectionChance){
+            // RNG, probably a cleaner way to do this. Wich condition is read first?
+            if (rand() % 101 >= percentileSelectionChance && strchr(token, '\n') == NULL){ //I think the para filter actually works?! Probably really slow.
                 // Whitespace filter, probably a quicker way to do this
                 while(isspace((unsigned char)*token)) token++;
                 fprintf(output_file, "%s\n", token);
