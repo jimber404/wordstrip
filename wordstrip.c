@@ -52,9 +52,11 @@ int main(int argc, char *argv[]) {
     selected_indices = (int*) malloc(selected_count * sizeof(int));
 
     //Fails to preserve sentence order.
+    int start = 0;
     srand(time(NULL)); // Seed random number generator
     for (i = 0; i < selected_count; i++) {
-        selected_indices[i] = rand() % sentence_count;
+        selected_indices[i] = rand() % sentence_count + start; //added +start to try and order
+        start++;
     }
 
     //Viewing contents. All seems okay?
@@ -70,7 +72,7 @@ int main(int argc, char *argv[]) {
         token = strtok(sentence, delimiter);
         while (token != NULL) {
             // It seems like this if condition is failing to be met most of the time, why?
-            // I think the below function assumes that selected_indicies are stored in order.
+            // I think the below function assumes that selected_indicies are stored in order. Might overhaul this bit.
             if (i < selected_count && selected_indices[i] == i) {
                 fprintf(output_file, "%s\n", token);
                 printf( " %s was written \n", token );
