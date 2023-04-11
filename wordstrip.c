@@ -30,6 +30,7 @@ int main(int argc, char *argv[]) {
     // percentile_selection_change = 100-arg[n];
 
     // Open input and output files
+    // This needs to work for .odt files as well.
     input_file = fopen(input_filename, "r+");
     if (!input_file) {
         printf("Error opening input file: %s\n", input_filename);
