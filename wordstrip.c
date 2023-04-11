@@ -13,7 +13,7 @@ int main(int argc, char *argv[]) {
     char *input_filename, *output_filename;
     char sentence[MAX_SENTENCE_LENGTH];
     char *token;
-    const char *delimiter = ".!?";
+    const char *delimiter = ".!?\n";
     int sentence_count = 0, selected_count = 0, percentileSelectionChance = 75, writtenSentences = 0;
     int i;
 
